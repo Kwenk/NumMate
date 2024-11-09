@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telefonanruf Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .phone-container {
+            background-color: #2b2b2b;
+            width: 350px;
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .phone-header {
+            background-color: #333;
+            width: 100%;
+            height: 60px;
+            border-radius: 15px;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .number-display {
+            background-color: white;
+            width: 100%;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .keypad button {
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 24px;
+            padding: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .keypad button:hover {
+            background-color: #555;
+        }
+
+        .keypad button:active {
+            background-color: #777;
+        }
+
+        .call-action {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50%;
+            font-size: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .call-action:hover {
+            background-color: #45a049;
+        }
+
+        .call-action:active {
+            background-color: #388e3c;
+        }
+
+        .name-input {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .name-input input {
+            padding: 10px;
+            font-size: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: none;
+            width: 80%;
+        }
+
+        .name-input button {
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .name-input button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-container">
+        <div class="phone-header">Telefon</div>
+        <div class="number-display" id="numberDisplay">0</div>
+        <div class="keypad">
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber('*')">*</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button onclick="appendNumber('#')">#</button>
+        </div>
+        <button class="call-action" id="callAction" onclick="proceedToName()">&#8594;</button>
+        
+        <div class="name-input" id="nameInput">
+            <input type="text" id="name" placeholder="Geben Sie den Namen ein">
+            <button onclick="saveNumber()">Speichern</button>
+        </div>
+    </div>
+
+    <script>
+        let currentNumber = '';
+        const numberDisplay = document.getElementById('numberDisplay');
+        const callAction = document.getElementById('callAction');
+        const nameInputSection = document.getElementById('nameInput');
+        
+        // Funktion, um Zahlen hinzuzufügen
+        function appendNumber(num) {
+            if (currentNumber.length < 15) {
+                currentNumber += num;
+                numberDisplay.textContent = currentNumber;
+            }
+        }
+
+        // Funktion für den Pfeil-Button, der zu Name-Eingabe übergeht
+        function proceedToName() {
+            if (currentNumber.length > 0) {
+                // Verstecke die Tastatur und zeige das Namensfeld
+                document.querySelector('.keypad').style.display = 'none';
+                callAction.style.display = 'none';
+                numberDisplay.textContent = currentNumber;
+                nameInputSection.style.display = 'flex';
+            } else {
+                alert('Bitte geben Sie eine Telefonnummer ein.');
+            }
+        }
+
+        // Funktion zum Speichern der Nummer mit Namen
+        function saveNumber() {
+            const name = document.getElementById('name').value.trim();
+            if (name.length > 0) {
+                alert(`Nummer: ${currentNumber} wurde mit dem Namen ${name} gespeichert.`);
+                // Hier könnte man die Routine zum Speichern der Nummer hinzufügen
+                resetPhoneInterface();
+            } else {
+                alert('Bitte geben Sie einen Namen ein.');
+            }
+        }
+
+        // Interface zurücksetzen
+        function resetPhoneInterface() {
+            currentNumber = '';
+            numberDisplay.textContent = '0';
+            nameInputSection.style.display = 'none';
+            document.querySelector('.keypad').style.display = 'grid';
+            callAction.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
