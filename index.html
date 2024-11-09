@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telefonanruf Simulator</title>
+    <title>NumMate</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -125,13 +125,32 @@
         .name-input button:hover {
             background-color: #45a049;
         }
+
+        .delete-button {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 30px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-button:hover {
+            background-color: #c62828;
+        }
+
+        .delete-button:active {
+            background-color: #b71c1c;
+        }
     </style>
 </head>
 <body>
 
     <div class="phone-container">
-        <div class="phone-header">Telefon</div>
-        <div class="number-display" id="numberDisplay">0</div>
+        <div class="phone-header">Deine Nummer bitte:</div>
+        <div class="number-display" id="numberDisplay">01</div>
         <div class="keypad">
             <button onclick="appendNumber(1)">1</button>
             <button onclick="appendNumber(2)">2</button>
@@ -146,7 +165,10 @@
             <button onclick="appendNumber(0)">0</button>
             <button onclick="appendNumber('#')">#</button>
         </div>
-        <button class="call-action" id="callAction" onclick="proceedToName()">&#8594;</button>
+        <div style="display: flex; gap: 20px;">
+            <button class="delete-button" onclick="deleteLastNumber()">&#9003;</button>
+            <button class="call-action" id="callAction" onclick="proceedToName()">&#8594;</button>
+        </div>
         
         <div class="name-input" id="nameInput">
             <input type="text" id="name" placeholder="Geben Sie den Namen ein">
@@ -155,7 +177,7 @@
     </div>
 
     <script>
-        let currentNumber = '';
+        let currentNumber = '01';  // Startwert für das Display
         const numberDisplay = document.getElementById('numberDisplay');
         const callAction = document.getElementById('callAction');
         const nameInputSection = document.getElementById('nameInput');
@@ -164,6 +186,14 @@
         function appendNumber(num) {
             if (currentNumber.length < 15) {
                 currentNumber += num;
+                numberDisplay.textContent = currentNumber;
+            }
+        }
+
+        // Funktion zum Löschen der letzten Zahl
+        function deleteLastNumber() {
+            if (currentNumber.length > 1) {  // Stellen Sie sicher, dass wir nicht nur eine Zahl löschen
+                currentNumber = currentNumber.slice(0, -1);
                 numberDisplay.textContent = currentNumber;
             }
         }
@@ -195,8 +225,8 @@
 
         // Interface zurücksetzen
         function resetPhoneInterface() {
-            currentNumber = '';
-            numberDisplay.textContent = '0';
+            currentNumber = '01';  // Startwert zurücksetzen
+            numberDisplay.textContent = '01';
             nameInputSection.style.display = 'none';
             document.querySelector('.keypad').style.display = 'grid';
             callAction.style.display = 'block';
